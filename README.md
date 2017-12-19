@@ -61,6 +61,29 @@ Una forma de descubrir una ruta sería la siguiente:
 
 
 
+Consulta la marca de tiempo proporcionada por el servidor en modo legible (por
+ejemplo, Dec 13 14:20:43), y también en forma de ticks de reloj, utilizando la con-
+sulta adecuada. ¿Qué valor de retorno (código) incluye la respuesta CoAP si el pro-
+ceso ha tenido éxito?
+
+    user-iot@VM-IOT:~/workspace/libcoap/examples$ coap-client -m get -T cafe coap://[::1]/time
+    Dec 18 22:24:42
+    user-iot@VM-IOT:~/workspace/libcoap/examples$ coap-client -m get -T cafe coap://[::1]/time?ticks
+    1513635887
+
+
+Elimina el recurso time del servidor y, a continuación, modifica la marca de tiempo
+mediante una orden PUT . ¿Qué valores de retorno (código) se devuelven en ambos
+casos?
+
+
+servidor:
+Dec 19 21:47:16 DEBG *  [::1]:5683 <-> [::1]:37356 (if1) UDP: received 9 bytes
+v:1 t:CON c:DELETE i:736a {} [ Uri-Path:time ]
+Dec 19 21:47:16 DEBG call custom handler for resource 0x2f0df10e
+Dec 19 21:47:16 DEBG *  [::1]:5683 <-> [::1]:37356 (if1) UDP: sent 4 bytes
+
+
 
 
 
