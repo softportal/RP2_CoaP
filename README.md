@@ -13,17 +13,16 @@ __examples.__
 __Estudia sus opciones y parámetros de configuración. ¿En qué puertos y bajo qué protocolos__
 __escucha el servidor CoAP tras su arranque?__
 
-	$ netstat -ln
+$ netstat -ln
 
-tcp6       0      0 [::]:5683               [::]:*                  LISTEN     
+tcp6       0      0 [::]:5683               [::]:*                  LISTEN
 tcp6       0      0 [::]:5684               [::]:*                  LISTEN
-udp6       0      0 [::]:5683               [::]:*                             
+udp6       0      0 [::]:5683               [::]:*
 udp6       0      0 [::]:5684               [::]:*
 
 **Investiga las opciones disponibles en el cliente y servidor con respecto a la cantidad
 de mensajes de depuración a mostrar. Ejecuta el servidor CoAP con suficiente nivel
 de detalle en los mensajes de depuración**
-
 
 Para ello puedes ejecutar tanto el cliente o el servidor con la opción -v 10
 
@@ -39,7 +38,6 @@ Dec 18 19:25:17 DEBG call custom handler for resource 0x2f0df10e
 Dec 18 19:25:17 DEBG   [::1]:5683 <-> [::1]:46689 (if1) UDP: sent 4 bytes
 Dec 18 19:27:15 DEBG  [::1]:5683 <-> [::1]:46689 (if1) UDP: session closed
 
-
 **¿Qué recursos están disponibles en el servidor? Estudia el código fuente del mismo
 para observar la correlación entre los recursos descubiertos y los programados en el
 código. Averigua el significado de los atributos rt, ct, if y title**
@@ -50,14 +48,14 @@ init_resources(coap_context_t ctx)
 
 Hay una macro definida con char * para devolverla en la / inicial del servidor
 
+```C
 #define INDEX "This is a test server made with libcoap (see https://libcoap.net)\n" \
                 "Copyright (C) 2010--2016 Olaf Bergmann <bergmann@tzi.org>\n\n"
-
+```
 
 Una forma de descubrir una ruta sería la siguiente:
 
     r = coap_resource_init((unsigned char \*)"ttime", 5, COAP_RESOURCE_FLAGS_NOTIFY_CON);
-
 
 **Consulta la marca de tiempo proporcionada por el servidor en modo legible (por ejemplo, Dec 13 14:20:43), y también en forma de ticks de reloj, utilizando la consulta adecuada. ¿Qué valor de retorno (código) incluye la respuesta CoAP si el proceso
 ha tenido éxito?**
@@ -109,7 +107,6 @@ Constrained Application Protocol, Acknowledgement, 2.05 Content, MID:29546
 
 ***
 
-
 **Modifica la marca de tiempo que proporciona el servidor CoAP. ¿Qué valor de retorno (código) incluye la respuesta CoAP si el proceso ha tenido éxito?**
 
 Hacemos una petición **PUT** para cambiar el **URI** del recurso *time*. La respuesta que recibimos  es la siguiente:
@@ -128,19 +125,17 @@ Constrained Application Protocol, Acknowledgement, 2.04 Changed, MID:29546
 
 ***
 
-
 **Elimina el recurso time del servidor y, a continuación, modifica la marca de tiempo
 mediante una orden PUT . ¿Qué valores de retorno (código) se devuelven en ambos
 casos?**
 
-
 ***
 
-	servidor:
-	Dec 19 21:47:16 DEBG *  [::1]:5683 <-> [::1]:37356 (if1) UDP: received 9 bytes
-	v:1 t:CON c:DELETE i:736a {} [ Uri-Path:time ]
-	Dec 19 21:47:16 DEBG call custom handler for resource 0x2f0df10e
-	Dec 19 21:47:16 DEBG *  [::1]:5683 <-> [::1]:37356 (if1) UDP: sent 4 bytes
+servidor:
+Dec 19 21:47:16 DEBG *  [::1]:5683 <-> [::1]:37356 (if1) UDP: received 9 bytes
+v:1 t:CON c:DELETE i:736a {} [Uri-Path:time]
+Dec 19 21:47:16 DEBG call custom handler for resource 0x2f0df10e
+Dec 19 21:47:16 DEBG *  [::1]:5683 <-> [::1]:37356 (if1) UDP: sent 4 bytes
 
 ***
 
@@ -148,11 +143,11 @@ casos?**
 
 Comparamos a nivel de transporte dos peticiones de tipo *GET* y sus respectivas respuestas con TCP y UDP.
 
-+ Petición UDP GET:  
++ Petición UDP GET:
 
-++ Longitud del *payload* a nivel de RED: 17
++ + Longitud del *payload* a nivel de RED: 17
 
-++ User Datagram Protocol, Src Port: 49936, Dst Port: 5683
++ + User Datagram Protocol, Src Port: 49936, Dst Port: 5683
     Source Port: 49936
     Destination Port: 5683
     Length: 17
@@ -160,7 +155,7 @@ Comparamos a nivel de transporte dos peticiones de tipo *GET* y sus respectivas 
     [Checksum Status: Unverified]
     [Stream index: 1]
 
-++ Constrained Application Protocol, Confirmable, GET, MID:29546
++ + Constrained Application Protocol, Confirmable, GET, MID:29546
     01.. .... = Version: 1
     ..00 .... = Type: Confirmable (0)
     .... 0000 = Token Length: 0
@@ -171,9 +166,9 @@ Comparamos a nivel de transporte dos peticiones de tipo *GET* y sus respectivas 
 
 + Petición TCP GET:
 
-++ Longitud del *payload* a nivel de RED: 43
++ + Longitud del *payload* a nivel de RED: 43
 
-++ Transmission Control Protocol, Src Port: 52334, Dst Port: 5683, Seq: 7, Ack: 7, Len: 11
++ + Transmission Control Protocol, Src Port: 52334, Dst Port: 5683, Seq: 7, Ack: 7, Len: 11
     Source Port: 52334
     Destination Port: 5683
     [Stream index: 0]
@@ -191,8 +186,8 @@ Comparamos a nivel de transporte dos peticiones de tipo *GET* y sus respectivas 
     Urgent pointer: 0
     Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
     [SEQ/ACK analysis]
-    
-++ Constrained Application Protocol, Non-Confirmable, GET, MID:25441
+
++ + Constrained Application Protocol, Non-Confirmable, GET, MID:25441
     01.. .... = Version: 1
     ..01 .... = Type: Non-Confirmable (1)
     .... 0100 = Token Length: 4
@@ -203,9 +198,9 @@ Comparamos a nivel de transporte dos peticiones de tipo *GET* y sus respectivas 
 
 + Respuesta UDP:
 
-++ Longitud del *payload* a nivel de red: 31
++ + Longitud del *payload* a nivel de red: 31
 
-++ User Datagram Protocol, Src Port: 5683, Dst Port: 49936
++ + User Datagram Protocol, Src Port: 5683, Dst Port: 49936
     Source Port: 5683
     Destination Port: 49936
     Length: 31
@@ -213,7 +208,7 @@ Comparamos a nivel de transporte dos peticiones de tipo *GET* y sus respectivas 
     [Checksum Status: Unverified]
     [Stream index: 1]
 
-++ Constrained Application Protocol, Acknowledgement, 2.05 Content, MID:29546
++ + Constrained Application Protocol, Acknowledgement, 2.05 Content, MID:29546
     01.. .... = Version: 1
     ..10 .... = Type: Acknowledgement (2)
     .... 0000 = Token Length: 0
@@ -231,9 +226,9 @@ Comparamos a nivel de transporte dos peticiones de tipo *GET* y sus respectivas 
 
 + Respuesta TCP:
 
-++ Longitud del *payload* a nivel de red: 58
++ + Longitud del *payload* a nivel de red: 58
 
-++ Transmission Control Protocol, Src Port: 5683, Dst Port: 52334, Seq: 7, Ack: 18, Len: 26
++ + Transmission Control Protocol, Src Port: 5683, Dst Port: 52334, Seq: 7, Ack: 18, Len: 26
     Source Port: 5683
     Destination Port: 52334
     [Stream index: 0]
@@ -252,7 +247,7 @@ Comparamos a nivel de transporte dos peticiones de tipo *GET* y sus respectivas 
     Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
     [SEQ/ACK analysis]
 
-++ Constrained Application Protocol, Non-Confirmable, Unknown 6, MID:17763
++ + Constrained Application Protocol, Non-Confirmable, Unknown 6, MID:17763
     11.. .... = Version: 3
     ..01 .... = Type: Non-Confirmable (1)
     .... 0100 = Token Length: 4
@@ -262,7 +257,7 @@ Comparamos a nivel de transporte dos peticiones de tipo *GET* y sus respectivas 
     [Expert Info (Warning/Malformed): Invalid Option Number 2]
     Opt Name: #1: Unknown Option: 01
     End of options marker: 255
-    Payload: Payload Content-Format: text/plain; charset=utf-8 (no Content-Format), Length: 
+    Payload: Payload Content-Format: text/plain; charset=utf-8 (no Content-Format), Length:
         Payload Desc: text/plain; charset=utf-8
         Line-based text data: text/plain
             Dec 19 22:07:55
