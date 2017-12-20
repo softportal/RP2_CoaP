@@ -146,11 +146,127 @@ casos?**
 
 **Fuerza el uso de TCP en el cliente mediante la opción correspondiente y estudia las principales diferencias entre los mensajes intercambiados con respecto al uso de UDP.**
 
-Comparamos a nivel de transporte y a nivel de aplicación dos peticiones de tipo *GET* y sus respectivas respuestas con TCP y UDP.
+Comparamos a nivel de transporte dos peticiones de tipo *GET* y sus respectivas respuestas con TCP y UDP.
 
++ Petición UDP GET:  
 
+++ Longitud del *payload* a nivel de RED: 17
 
+++ User Datagram Protocol, Src Port: 49936, Dst Port: 5683
+    Source Port: 49936
+    Destination Port: 5683
+    Length: 17
+    Checksum: 0x0024 [unverified]
+    [Checksum Status: Unverified]
+    [Stream index: 1]
 
+++ Constrained Application Protocol, Confirmable, GET, MID:29546
+    01.. .... = Version: 1
+    ..00 .... = Type: Confirmable (0)
+    .... 0000 = Token Length: 0
+    Code: GET (1)
+    Message ID: 29546
+    Opt Name: #1: Uri-Path: time
+    [Response In: 4]
 
++ Petición TCP GET:
 
+++ Longitud del *payload* a nivel de RED: 43
 
+++ Transmission Control Protocol, Src Port: 52334, Dst Port: 5683, Seq: 7, Ack: 7, Len: 11
+    Source Port: 52334
+    Destination Port: 5683
+    [Stream index: 0]
+    [TCP Segment Len: 11]
+    Sequence number: 7    (relative sequence number)
+    [Next sequence number: 18    (relative sequence number)]
+    Acknowledgment number: 7    (relative ack number)
+    Header Length: 32 bytes
+    Flags: 0x018 (PSH, ACK)
+    Window size value: 342
+    [Calculated window size: 43776]
+    [Window size scaling factor: 128]
+    Checksum: 0x0033 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+    [SEQ/ACK analysis]
+    
+++ Constrained Application Protocol, Non-Confirmable, GET, MID:25441
+    01.. .... = Version: 1
+    ..01 .... = Type: Non-Confirmable (1)
+    .... 0100 = Token Length: 4
+    Code: GET (1)
+    Message ID: 25441
+    Token: 6665b474
+    [Expert Info (Warning/Malformed): option longer than the package]
+
++ Respuesta UDP:
+
+++ Longitud del *payload* a nivel de red: 31
+
+++ User Datagram Protocol, Src Port: 5683, Dst Port: 49936
+    Source Port: 5683
+    Destination Port: 49936
+    Length: 31
+    Checksum: 0x0032 [unverified]
+    [Checksum Status: Unverified]
+    [Stream index: 1]
+
+++ Constrained Application Protocol, Acknowledgement, 2.05 Content, MID:29546
+    01.. .... = Version: 1
+    ..10 .... = Type: Acknowledgement (2)
+    .... 0000 = Token Length: 0
+    Code: 2.05 Content (69)
+    Message ID: 29546
+    Opt Name: #1: Content-Format: text/plain; charset=utf-8
+    Opt Name: #2: Max-age: 1
+    End of options marker: 255
+    [Request In: 3]
+    [Response Time: 0.000046000 seconds]
+    Payload: Payload Content-Format: text/plain; charset=utf-8, Length: 15
+        Payload Desc: text/plain; charset=utf-8
+        Line-based text data: text/plain
+            Dec 18 17:56:30
+
++ Respuesta TCP:
+
+++ Longitud del *payload* a nivel de red: 58
+
+++ Transmission Control Protocol, Src Port: 5683, Dst Port: 52334, Seq: 7, Ack: 18, Len: 26
+    Source Port: 5683
+    Destination Port: 52334
+    [Stream index: 0]
+    [TCP Segment Len: 26]
+    Sequence number: 7    (relative sequence number)
+    [Next sequence number: 33    (relative sequence number)]
+    Acknowledgment number: 18    (relative ack number)
+    Header Length: 32 bytes
+    Flags: 0x018 (PSH, ACK)
+    Window size value: 342
+    [Calculated window size: 43776]
+    [Window size scaling factor: 128]
+    Checksum: 0x0042 [unverified]
+    [Checksum Status: Unverified]
+    Urgent pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+    [SEQ/ACK analysis]
+
+++ Constrained Application Protocol, Non-Confirmable, Unknown 6, MID:17763
+    11.. .... = Version: 3
+    ..01 .... = Type: Non-Confirmable (1)
+    .... 0100 = Token Length: 4
+    Code: Unknown (6)
+    Message ID: 17763
+    Token: 616665c0
+    [Expert Info (Warning/Malformed): Invalid Option Number 2]
+    Opt Name: #1: Unknown Option: 01
+    End of options marker: 255
+    Payload: Payload Content-Format: text/plain; charset=utf-8 (no Content-Format), Length: 
+        Payload Desc: text/plain; charset=utf-8
+        Line-based text data: text/plain
+            Dec 19 22:07:55
+
+**¿Cuál es la eficiencia al utilizar UDP y TCP como protocolos de transporte para CoAP?**
+
+Como vemos a parte de una diferencia significativa en cuanto al tamaño de los paquetes, podemos apreciar que en la *versión UDP* se realizan a nivel de aplicación tareas que en la *versión TCP* realiza la propia capa de transporte como las confirmaciones.
