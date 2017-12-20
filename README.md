@@ -59,26 +59,23 @@ Una forma de descubrir una ruta sería la siguiente:
     r = coap_resource_init((unsigned char \*)"ttime", 5, COAP_RESOURCE_FLAGS_NOTIFY_CON);
 
 
-
-
-**Consulta la marca de tiempo proporcionada por el servidor en modo legible (por
-ejemplo, Dec 13 14:20:43), y también en forma de ticks de reloj, utilizando la con-
-sulta adecuada. ¿Qué valor de retorno (código) incluye la respuesta CoAP si el pro-
-ceso ha tenido éxito?**
+**Consulta la marca de tiempo proporcionada por el servidor en modo legible (por ejemplo, Dec 13 14:20:43), y también en forma de ticks de reloj, utilizando la consulta adecuada. ¿Qué valor de retorno (código) incluye la respuesta CoAP si el proceso
+ha tenido éxito?**
 
     user-iot@VM-IOT:~/workspace/libcoap/examples$ coap-client -m get -T cafe coap://[::1]/time
     Dec 18 22:24:42
     user-iot@VM-IOT:~/workspace/libcoap/examples$ coap-client -m get -T cafe coap://[::1]/time?ticks
     1513635887
-**Consulta la marca de tiempo proporcionada por el servidor en modo legible (por ejemplo, Dec 13 14:20:43), y también en forma de ticks de reloj, utilizando la consulta adecuada. ¿Qué valor de retorno (código) incluye la respuesta CoAP si el proceso
-ha tenido éxito?
 
+***
 
-servidor:
-Dec 19 21:47:16 DEBG *  [::1]:5683 <-> [::1]:37356 (if1) UDP: received 9 bytes
-v:1 t:CON c:DELETE i:736a {} [ Uri-Path:time ]
-Dec 19 21:47:16 DEBG call custom handler for resource 0x2f0df10e
-Dec 19 21:47:16 DEBG *  [::1]:5683 <-> [::1]:37356 (if1) UDP: sent 4 bytes
+	servidor:
+	Dec 19 21:47:16 DEBG *  [::1]:5683 <-> [::1]:37356 (if1) UDP: received 9 bytes
+	v:1 t:CON c:DELETE i:736a {} [ Uri-Path:time ]
+	Dec 19 21:47:16 DEBG call custom handler for resource 0x2f0df10e
+	Dec 19 21:47:16 DEBG *  [::1]:5683 <-> [::1]:37356 (if1) UDP: sent 4 bytes
+
+***
 
 ![WireSharkScreenShot](coap1.png)
 
@@ -86,7 +83,7 @@ Tal y como se aprecia en la captura de pantalla, realizamos peticiones **GET** d
 
 **Modifica la marca de tiempo que proporciona el servidor CoAP. ¿Qué valor de retorno (código) incluye la respuesta CoAP si el proceso ha tenido éxito?**
 
-Hacemos una petición **PUT** para cambiar el **URI** del recurso *time*. La respuesta que recibimos cuando dicha petición tiene éxito es la siguiente:
+Hacemos una petición **PUT** para cambiar el **URI** del recurso *time*. La respuesta que recibimos  es la siguiente:
 
 ***
 Constrained Application Protocol, Acknowledgement, 2.04 Changed, MID:29546  
@@ -99,6 +96,7 @@ Constrained Application Protocol, Acknowledgement, 2.04 Changed, MID:29546
     [Response Time: 0.000046000 seconds]  
 ***
 
+Cuando dicha petición tiene éxito recibe el código 68 *Changed*
 
 **Elimina el recurso time del servidor y, a continuación, modifica la marca de tiempo
 mediante una orden PUT . ¿Qué valores de retorno (código) se devuelven en ambos
