@@ -67,6 +67,73 @@ ha tenido éxito?**
     user-iot@VM-IOT:~/workspace/libcoap/examples$ coap-client -m get -T cafe coap://[::1]/time?ticks
     1513635887
 
+![WireSharkScreenShot](coap1.png)
+
+Tal y como se aprecia en la captura de pantalla, realizamos peticiones **GET** de los **URI** *well-known/core* y *time* (en *human-readeable* y en *ticks*).
+
+La respuesta que recibimos del servidor es la siguiente:
+
+***
+Constrained Application Protocol, Acknowledgement, 2.05 Content, MID:29546
+    01.. .... = Version: 1
+    ..10 .... = Type: Acknowledgement (2)
+    .... 0000 = Token Length: 0
+    Code: 2.05 Content (69)
+    Message ID: 29546
+    Opt Name: #1: Content-Format: text/plain; charset=utf-8
+    Opt Name: #2: Max-age: 1
+    End of options marker: 255
+    [Request In: 3]
+    [Response Time: 0.000046000 seconds]
+    Payload: Payload Content-Format: text/plain; charset=utf-8, Length: 15
+        Payload Desc: text/plain; charset=utf-8
+        Line-based text data: text/plain
+            Dec 18 17:56:30
+
+***
+Constrained Application Protocol, Acknowledgement, 2.05 Content, MID:29546
+    01.. .... = Version: 1
+    ..10 .... = Type: Acknowledgement (2)
+    .... 0000 = Token Length: 0
+    Code: 2.05 Content (69)
+    Message ID: 29546
+    Opt Name: #1: Content-Format: text/plain; charset=utf-8
+    Opt Name: #2: Max-age: 1
+    End of options marker: 255
+    [Request In: 5]
+    [Response Time: 0.000047000 seconds]
+    Payload: Payload Content-Format: text/plain; charset=utf-8, Length: 10
+        Payload Desc: text/plain; charset=utf-8
+        Line-based text data: text/plain
+            1513619797
+
+***
+
+
+**Modifica la marca de tiempo que proporciona el servidor CoAP. ¿Qué valor de retorno (código) incluye la respuesta CoAP si el proceso ha tenido éxito?**
+
+Hacemos una petición **PUT** para cambiar el **URI** del recurso *time*. La respuesta que recibimos  es la siguiente:
+
+***
+
+Constrained Application Protocol, Acknowledgement, 2.04 Changed, MID:29546
+    01.. .... = Version: 1
+    ..10 .... = Type: Acknowledgement (2)
+    .... 0100 = Token Length: 4
+    Code: 2.04 Changed (68)
+    Message ID: 29546
+    Token: 63616665
+    [Request In: 15]
+    [Response Time: 0.000050000 seconds]
+
+***
+
+
+**Elimina el recurso time del servidor y, a continuación, modifica la marca de tiempo
+mediante una orden PUT . ¿Qué valores de retorno (código) se devuelven en ambos
+casos?**
+
+
 ***
 
 	servidor:
@@ -77,31 +144,9 @@ ha tenido éxito?**
 
 ***
 
-![WireSharkScreenShot](coap1.png)
+**Fuerza el uso de TCP en el cliente mediante la opción correspondiente y estudia las principales diferencias entre los mensajes intercambiados con respecto al uso de UDP.**
 
-Tal y como se aprecia en la captura de pantalla, realizamos peticiones **GET** de los **URI** *well-known/core* y *time* (en *human-readeable* y en *ticks*).
-
-**Modifica la marca de tiempo que proporciona el servidor CoAP. ¿Qué valor de retorno (código) incluye la respuesta CoAP si el proceso ha tenido éxito?**
-
-Hacemos una petición **PUT** para cambiar el **URI** del recurso *time*. La respuesta que recibimos  es la siguiente:
-
-***
-Constrained Application Protocol, Acknowledgement, 2.04 Changed, MID:29546  
-    01.. .... = Version: 1  
-    ..10 .... = Type: Acknowledgement (2) 
-    .... 0000 = Token Length: 0  
-    Code: 2.04 Changed (68) 
-    Message ID: 29546 
-    [Request In: 7]   
-    [Response Time: 0.000046000 seconds]  
-***
-
-Cuando dicha petición tiene éxito recibe el código 68 *Changed*
-
-**Elimina el recurso time del servidor y, a continuación, modifica la marca de tiempo
-mediante una orden PUT . ¿Qué valores de retorno (código) se devuelven en ambos
-casos?**
-
+Comparamos a nivel de transporte y a nivel de aplicación dos peticiones de tipo *GET* y sus respectivas respuestas con TCP y UDP.
 
 
 
